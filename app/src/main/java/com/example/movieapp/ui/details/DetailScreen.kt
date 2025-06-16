@@ -1,3 +1,7 @@
+//LaunchedEffect: reloads data when id changes
+//snackbar:error msg
+//rememberInfiniteTransition() to create a fade-in and out animation
+
 package com.example.movieapp.ui.details
 
 import androidx.compose.animation.AnimatedContent
@@ -44,12 +48,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.movieapp.ui.details.components.DetailContent
-import com.example.movieapp.ui.home.components.ContentGrid
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
-
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -61,14 +64,12 @@ fun DetailScreen(
     viewModel: DetailsViewModel = koinViewModel()
 
 ){
-
     val state by viewModel.state.collectAsState()
     val related by viewModel.related.collectAsState()
     val scope = rememberCoroutineScope()
     val snackBarHostState = remember{SnackbarHostState()}
     val isMovie = contentType == "movie"
-
-
+    
     LaunchedEffect(state) {
         (state as? DetailsState.Error)?.let {
             snackBarHostState.showSnackbar( //display error message
@@ -112,8 +113,6 @@ fun DetailScreen(
                         }
                     }
         }
-
-
     }
 }
 
@@ -140,10 +139,8 @@ fun DetailsTopBar(state: DetailsState,onNavigateBack:() -> Unit){
             containerColor = MaterialTheme.colorScheme.surface
         ),
                 modifier = Modifier.statusBarsPadding()
-
     )
 }
-
 
 @Composable
 fun LoadingIndicator(){
@@ -155,7 +152,6 @@ fun LoadingIndicator(){
             repeatMode = RepeatMode.Reverse
         )
     )
-
     CircularProgressIndicator(
         modifier = Modifier.size(48.dp).alpha(alpha),
         color = MaterialTheme.colorScheme.primary
@@ -173,3 +169,65 @@ fun ErrorScreen(message: String, onRetry: () -> Unit){
         Button(onClick = onRetry) { Text("Retry") }
     }
 }
+
+@OptIn(ExperimentalAnimationApi::class)
+@Composable
+fun DetailScreenContent(
+    state: DetailsState,
+    related: List<com.example.movieapp.data.model.WatchContent>,
+    onNavigateBack: () -> Unit = {},
+    onNavigateToDetails: (String, String) -> Unit = { _, _ -> },
+    onRetry: () -> Unit = {}
+) {
+    Scaffold(
+        topBar = { DetailsTopBar(state, onNavigateBack) },
+        snackbarHost = { }
+    ) { paddingValues ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .background(MaterialTheme.colorScheme.background)
+                .padding(horizontal = 16.dp),
+            contentAlignment = Alignment.TopCenter
+        ) {
+            AnimatedContent(targetState = state, transitionSpec = { fadeIn() with fadeOut() }) { currentState ->
+                when (currentState) {
+                    is DetailsState.Loading -> LoadingIndicator()
+                    is DetailsState.Success -> DetailContent(
+                        content = currentState.content,
+                        related = related,
+                        onRelatedItemClick = { id, isMovie ->
+                            onNavigateToDetails(id, if (isMovie) "movie" else "tv")
+                        },
+                        modifier = Modifier.fillMaxSize()
+                    )
+                    is DetailsState.Error -> ErrorScreen(
+                        message = currentState.message,
+                        onRetry = onRetry
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DetailScreenContentPreview() {
+    val sampleContent = com.example.movieapp.data.model.WatchContent(
+        id = "1",
+        title = "Mufasa",
+        posterUrl = "https://via.placeholder.com/300x450.png?text=Poster",
+        description = "Sample Movie or Tv show",
+        releaseDate = "2025-10-12",
+        type = "movie",
+        isMovie = true
+    )
+    val sampleRelated = listOf(sampleContent)
+    DetailScreenContent(
+        state = DetailsState.Success(sampleContent),
+        related = sampleRelated
+    )
+}
+

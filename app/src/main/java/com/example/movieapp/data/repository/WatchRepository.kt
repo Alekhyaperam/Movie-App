@@ -1,12 +1,11 @@
 package com.example.movieapp.data.repository
 
 import com.example.movieapp.data.model.WatchContent
-import io.reactivex.rxjava3.core.Single
 
 interface WatchRepository {
-    fun getMoviesAndTvShows():Single<Pair<List<WatchContent>,List<WatchContent>>>
+    suspend fun getMoviesAndTvShows(): Pair<List<WatchContent>, List<WatchContent>>
     suspend fun getContentDetails(
-        contentId:String,
+        contentId: String,
         isMovie: Boolean
     ): WatchContent
 
@@ -17,6 +16,5 @@ interface WatchRepository {
 }
 
 //defines how our app retrives data  from apis
-//single emits one value
-//combines two lits
+//coroutines suspend functions are used to make the code asychronus
 

@@ -15,7 +15,7 @@ import com.example.movieapp.ui.home.components.*
 import androidx.compose.material3.TextFieldDefaults
 
 import androidx.compose.material3.MaterialTheme
-
+import androidx.compose.ui.tooling.preview.Preview
 
 
 import org.koin.androidx.compose.koinViewModel
@@ -112,3 +112,5 @@ fun HomeScreen(
         }
     }
 }
+
+

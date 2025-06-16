@@ -1,13 +1,12 @@
 package com.example.movieapp.ui.home
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.movieapp.domain.usecase.GetMoviesAndTvShowsUseCase
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val getMoviesAndTvShowsUseCase: GetMoviesAndTvShowsUseCase
@@ -20,8 +19,6 @@ class HomeViewModel(
 
     private val _searchQuery = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery.asStateFlow()
-
-    private val disposables = CompositeDisposable()
 
     init {
         loadContent()
@@ -38,23 +35,16 @@ class HomeViewModel(
 
     fun loadContent() {
         _state.value = HomeState.Loading
-
-        getMoviesAndTvShowsUseCase()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ (movies, tvShows) ->
+        viewModelScope.launch {
+            try {
+                val (movies, tvShows) = getMoviesAndTvShowsUseCase()
                 _state.value = HomeState.Success(
                     movies = movies,
                     tvShows = tvShows
                 )
-            }, { error ->
-                _state.value = HomeState.Error(error.message ?: "Unknown error occurred")
-            })
-            .let { disposables.add(it) }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        disposables.clear()
+            } catch (e: Exception) {
+                _state.value = HomeState.Error(e.message ?: "Unknown error occurred")
+            }
+        }
     }
 }

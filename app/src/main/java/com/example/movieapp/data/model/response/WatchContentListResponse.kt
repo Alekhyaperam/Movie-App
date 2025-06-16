@@ -1,3 +1,5 @@
+//represents api response only main one represents here
+
 package com.example.movieapp.data.model.response
 
 data class WatchContentListResponse(
@@ -7,4 +9,3 @@ data class WatchContentListResponse(
     val total_result:Int
 )
 
-//represents api response

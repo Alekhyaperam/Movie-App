@@ -4,7 +4,6 @@ package com.example.movieapp.data.mapper
 import com.example.movieapp.data.model.WatchContent
 import com.example.movieapp.data.model.response.WatchContentResponse
 
-
 class WatchMapper @Inject constructor() {
     annotation class Inject
 

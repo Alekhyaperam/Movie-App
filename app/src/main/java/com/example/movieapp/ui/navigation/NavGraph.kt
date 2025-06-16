@@ -1,6 +1,7 @@
 package com.example.movieapp.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -45,6 +46,12 @@ fun WatchAppNavigation(
             )
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewNavGraph(){
+    WatchAppNavigation()
 }
 
 

@@ -1,9 +1,10 @@
-package com.example.movieapp.ui.details
+//we will get the status msg
 
-import com.example.movieapp.data.model.WatchContent
+package com.example.movieapp.ui.details
 
 sealed class DetailsState{
     data object Loading: DetailsState()
-    data class Success(val content: WatchContent):DetailsState()
+    data class Success(val content: com.example.movieapp.data.model.WatchContent):DetailsState()
     data class Error(val message: String):DetailsState()
 }
+

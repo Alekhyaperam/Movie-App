@@ -1,3 +1,6 @@
+//represent a limited number of subclasses. sealed
+//enum means it shows correctly which type is movie or tv
+
 package com.example.movieapp.ui.home
 
 import com.example.movieapp.data.model.WatchContent
@@ -13,4 +16,4 @@ sealed class HomeState {
 enum class ContentType {
     MOVIES, TV_SHOWS
 }
-//represent a limited number of subclasses. sealed
+

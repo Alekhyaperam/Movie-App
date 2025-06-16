@@ -1,3 +1,6 @@
+//can be use to map the response
+//it can be "movie" or "tv_show"
+
 package com.example.movieapp.data.model
 
 data class WatchContent(
@@ -7,7 +10,6 @@ data class WatchContent(
     val description: String,
     val releaseDate: String?,
     val type: String ,
-    val isMovie: Boolean //it can be "movie" or "tv_show"
+    val isMovie: Boolean
 )
 
-//can be use to map the response

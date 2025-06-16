@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.movieapp.data.model.WatchContent
@@ -67,4 +68,22 @@ fun WatchContentCard(
         }
     }
 
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewWatchContentCard() {
+    WatchContentCard(
+        content = WatchContent(
+            id = "1",
+            title = "Movie",
+            posterUrl = "",
+            description = "",
+            releaseDate = "2025-10-10",
+            type = "movie",
+            isMovie = true
+        ),
+        onClick = {}
+
+    )
 }

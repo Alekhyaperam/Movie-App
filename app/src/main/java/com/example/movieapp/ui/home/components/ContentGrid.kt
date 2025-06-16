@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.movieapp.data.model.WatchContent
 
 @Composable
@@ -32,3 +33,16 @@ fun ContentGrid(
     }
 }
 
+@Preview(showBackground = true)
+@Composable
+fun PreviewContentGrid() {
+    val sampleContents = listOf(
+        WatchContent(id = "1", title = "Lio", posterUrl =  "", description = "", releaseDate = "2025-10-22", type = "movie", isMovie = true),
+        WatchContent(id = "2", title = "Mufasa", posterUrl = "", description = "",releaseDate = "2025-10-22", type = "tv", isMovie = true)
+    )
+    ContentGrid(
+        contents = sampleContents,
+        onItemClick = {},
+        modifier = Modifier
+    )
+}

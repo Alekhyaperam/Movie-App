@@ -1,6 +1,6 @@
+//sub part of data for movie and tv
+
 package com.example.movieapp.data.model.response
-
-
 
 data class WatchContentResponse(
     val id: String,

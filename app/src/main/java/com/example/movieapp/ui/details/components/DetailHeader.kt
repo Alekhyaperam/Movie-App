@@ -1,4 +1,5 @@
 package com.example.movieapp.ui.details.components
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -7,9 +8,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.movieapp.data.model.WatchContent
+
+
 
 @Composable
 fun DetailHeader(content: WatchContent) {
@@ -43,4 +47,21 @@ fun DetailHeader(content: WatchContent) {
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewDetailHeader() {
+    DetailHeader(
+        content = WatchContent(
+            id = "1",
+            title = "Sample Movie",
+            description = "sample description",
+            posterUrl = "",
+            releaseDate = "2025-06-10",
+            type = "movie",
+            isMovie = true
+        )
+    )
+    
 }
